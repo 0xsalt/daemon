@@ -1,0 +1,316 @@
+#!/bin/bash
+
+# =============================================================================
+# Pre-commit Hook for Daemon Public Repository
+# =============================================================================
+# This is a PUBLIC repo - absolutely no sensitive data allowed!
+#
+# Checks:
+# 1. API keys and tokens (various formats)
+# 2. Email addresses (except @danielmiessler.com)
+# 3. Personal names from Daniel's contacts
+# 4. Private filesystem paths
+# 5. Customer/client references
+# 6. Secret/password patterns
+# 7. Sensitive file types
+# =============================================================================
+
+set -e
+
+RED='\033[0;31m'
+YELLOW='\033[0;33m'
+GREEN='\033[0;32m'
+CYAN='\033[0;36m'
+NC='\033[0m' # No Color
+
+echo -e "${CYAN}🔒 Daemon Pre-commit Security Check${NC}"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+# Get staged files
+FILES=$(git diff --cached --name-only --diff-filter=ACM 2>/dev/null || echo "")
+
+if [ -z "$FILES" ]; then
+    echo -e "${GREEN}✓ No files staged for commit.${NC}"
+    exit 0
+fi
+
+echo "Checking $(echo "$FILES" | wc -l | tr -d ' ') staged file(s)..."
+echo ""
+
+FOUND_ISSUES=0
+BLOCKED_ITEMS=""
+
+# Function to check patterns and report
+check_pattern() {
+    local pattern="$1"
+    local description="$2"
+    local files_to_check="$3"
+
+    local matches=$(echo "$files_to_check" | xargs grep -lE "$pattern" 2>/dev/null || echo "")
+
+    if [ -n "$matches" ]; then
+        echo -e "${RED}✗ BLOCKED: $description${NC}"
+        echo "$matches" | while read file; do
+            if [ -n "$file" ]; then
+                echo "  → $file"
+                # Show matching lines (first 3)
+                grep -nE "$pattern" "$file" 2>/dev/null | head -3 | sed 's/^/      /'
+            fi
+        done
+        echo ""
+        BLOCKED_ITEMS="$BLOCKED_ITEMS\n• $description"
+        return 1
+    fi
+    return 0
+}
+
+# =============================================================================
+# 1. API KEYS AND TOKENS
+# =============================================================================
+echo -e "${CYAN}[1/7] Checking for API keys and tokens...${NC}"
+
+# Specific key names
+PATTERNS_KEYS=(
+    "CLOUDFLARE_API_TOKEN"
+    "CF_API_TOKEN"
+    "ANTHROPIC_API_KEY"
+    "OPENAI_API_KEY"
+    "GOOGLE_API_KEY"
+    "AWS_ACCESS_KEY"
+    "AWS_SECRET"
+    "GITHUB_TOKEN"
+    "STRIPE_.*KEY"
+    "SENDGRID_API_KEY"
+    "TWILIO_.*KEY"
+)
+
+for pattern in "${PATTERNS_KEYS[@]}"; do
+    if check_pattern "$pattern" "API key: $pattern" "$FILES"; then
+        :
+    else
+        FOUND_ISSUES=1
+    fi
+done
+
+# Token patterns (format-based)
+TOKEN_PATTERNS=(
+    'sk-[a-zA-Z0-9]{20,}'           # OpenAI style
+    'ghp_[a-zA-Z0-9]{36}'           # GitHub PAT
+    'gho_[a-zA-Z0-9]{36}'           # GitHub OAuth
+    'ghu_[a-zA-Z0-9]{36}'           # GitHub user token
+    'ghs_[a-zA-Z0-9]{36}'           # GitHub server token
+    'github_pat_[a-zA-Z0-9_]{22,}'  # GitHub fine-grained PAT
+    'xoxb-[0-9]{10,}'               # Slack bot token
+    'xoxp-[0-9]{10,}'               # Slack user token
+    'AKIA[0-9A-Z]{16}'              # AWS Access Key ID
+    'sk_live_[a-zA-Z0-9]{24,}'      # Stripe live key
+    'pk_live_[a-zA-Z0-9]{24,}'      # Stripe public live key
+)
+
+for pattern in "${TOKEN_PATTERNS[@]}"; do
+    if check_pattern "$pattern" "Token pattern: $pattern" "$FILES"; then
+        :
+    else
+        FOUND_ISSUES=1
+    fi
+done
+
+# Generic secret assignments
+SECRET_PATTERNS=(
+    'password\s*[=:]\s*["\x27][^"\x27]+'
+    'secret\s*[=:]\s*["\x27][^"\x27]+'
+    'api_key\s*[=:]\s*["\x27][^"\x27]+'
+    'apikey\s*[=:]\s*["\x27][^"\x27]+'
+    'auth_token\s*[=:]\s*["\x27][^"\x27]+'
+    'access_token\s*[=:]\s*["\x27][^"\x27]+'
+    'private_key\s*[=:]\s*["\x27][^"\x27]+'
+)
+
+for pattern in "${SECRET_PATTERNS[@]}"; do
+    if check_pattern "$pattern" "Secret assignment pattern" "$FILES"; then
+        :
+    else
+        FOUND_ISSUES=1
+    fi
+done
+
+# =============================================================================
+# 2. EMAIL ADDRESSES
+# =============================================================================
+echo -e "${CYAN}[2/7] Checking for email addresses...${NC}"
+
+# Block all emails except @danielmiessler.com
+# This regex matches emails but we'll filter out danielmiessler.com
+EMAIL_PATTERN='[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'
+
+for file in $FILES; do
+    if [ -f "$file" ]; then
+        # Find emails that are NOT @danielmiessler.com
+        BAD_EMAILS=$(grep -oE "$EMAIL_PATTERN" "$file" 2>/dev/null | grep -v "@danielmiessler\.com" | head -5 || echo "")
+
+        if [ -n "$BAD_EMAILS" ]; then
+            echo -e "${RED}✗ BLOCKED: Non-public email addresses in $file${NC}"
+            echo "$BAD_EMAILS" | while read email; do
+                echo "  → $email"
+            done
+            echo ""
+            FOUND_ISSUES=1
+        fi
+    fi
+done
+
+# =============================================================================
+# 3. PERSONAL NAMES (from Contacts)
+# =============================================================================
+echo -e "${CYAN}[3/7] Checking for personal names...${NC}"
+
+# Names to block (from Contacts.md) - first names only for common ones
+PERSONAL_NAMES=(
+    "Bunny"
+    "Susan"          # Life partner
+    "Angela"         # Executive Assistant
+    "Kaleigh"        # Operations Manager
+    "Saša"
+    "Sasa"           # ASCII version
+    "Jason Haddix"
+    "jhaddix"
+    "Chad Lynch"
+    "Greg Reindel"
+    "Olivia Gallucci"
+    "Andrew Ringlein"
+    "Bryan Solari"
+    "Chuck Keith"
+    "Dave Goldsmith"
+    "Maria Ringlein"
+    "Brooks Garrett"
+    "Mark Cunningham"
+)
+
+for name in "${PERSONAL_NAMES[@]}"; do
+    # Case insensitive check, word boundary
+    if check_pattern "\\b$name\\b" "Personal name: $name" "$FILES"; then
+        :
+    else
+        FOUND_ISSUES=1
+    fi
+done
+
+# =============================================================================
+# 4. PRIVATE PATHS
+# =============================================================================
+echo -e "${CYAN}[4/7] Checking for private filesystem paths...${NC}"
+
+PATH_PATTERNS=(
+    '/Users/daniel/'
+    '/Users/[a-zA-Z]+/'        # Any user home path
+    '~/.claude/'
+    '~/Cloud/'
+    '/home/[a-zA-Z]+/'         # Linux home paths
+    'C:\\\\Users\\\\'          # Windows paths
+)
+
+for pattern in "${PATH_PATTERNS[@]}"; do
+    if check_pattern "$pattern" "Private path: $pattern" "$FILES"; then
+        :
+    else
+        FOUND_ISSUES=1
+    fi
+done
+
+# =============================================================================
+# 5. CUSTOMER/CLIENT DATA
+# =============================================================================
+echo -e "${CYAN}[5/7] Checking for customer/client references...${NC}"
+
+CUSTOMER_PATTERNS=(
+    'customer_id\s*[=:]'
+    'client_id\s*[=:].*[0-9]'
+    'customer_name\s*[=:]'
+    'client_name\s*[=:]'
+    'account_id\s*[=:].*[0-9]{5,}'
+    'user_id\s*[=:].*[0-9]{5,}'
+)
+
+for pattern in "${CUSTOMER_PATTERNS[@]}"; do
+    if check_pattern "$pattern" "Customer/client data pattern" "$FILES"; then
+        :
+    else
+        FOUND_ISSUES=1
+    fi
+done
+
+# =============================================================================
+# 6. PRIVATE IP ADDRESSES
+# =============================================================================
+echo -e "${CYAN}[6/7] Checking for private IP addresses...${NC}"
+
+IP_PATTERNS=(
+    '192\.168\.[0-9]+\.[0-9]+'
+    '10\.[0-9]+\.[0-9]+\.[0-9]+'
+    '172\.(1[6-9]|2[0-9]|3[0-1])\.[0-9]+\.[0-9]+'
+)
+
+for pattern in "${IP_PATTERNS[@]}"; do
+    if check_pattern "$pattern" "Private IP address" "$FILES"; then
+        :
+    else
+        FOUND_ISSUES=1
+    fi
+done
+
+# =============================================================================
+# 7. SENSITIVE FILES
+# =============================================================================
+echo -e "${CYAN}[7/7] Checking for sensitive file types...${NC}"
+
+# Check for .env files
+ENV_FILES=$(echo "$FILES" | grep -E '\.env$|\.env\.' 2>/dev/null || echo "")
+if [ -n "$ENV_FILES" ]; then
+    echo -e "${RED}✗ BLOCKED: .env files cannot be committed${NC}"
+    echo "$ENV_FILES" | sed 's/^/  → /'
+    echo ""
+    FOUND_ISSUES=1
+fi
+
+# Check for private keys
+KEY_FILES=$(echo "$FILES" | grep -E '\.pem$|\.key$|id_rsa|id_ed25519|\.p12$|\.pfx$' 2>/dev/null || echo "")
+if [ -n "$KEY_FILES" ]; then
+    echo -e "${RED}✗ BLOCKED: Private key files cannot be committed${NC}"
+    echo "$KEY_FILES" | sed 's/^/  → /'
+    echo ""
+    FOUND_ISSUES=1
+fi
+
+# Check for certificate files that might contain private keys
+CERT_FILES=$(echo "$FILES" | grep -E '\.crt$|\.cer$' 2>/dev/null || echo "")
+if [ -n "$CERT_FILES" ]; then
+    echo -e "${YELLOW}⚠ WARNING: Certificate files detected - verify no private keys${NC}"
+    echo "$CERT_FILES" | sed 's/^/  → /'
+    echo ""
+fi
+
+# =============================================================================
+# FINAL VERDICT
+# =============================================================================
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+if [ $FOUND_ISSUES -eq 1 ]; then
+    echo ""
+    echo -e "${RED}🚫 COMMIT BLOCKED${NC}"
+    echo ""
+    echo "This is a PUBLIC repository. Sensitive data was detected."
+    echo ""
+    echo "To fix:"
+    echo "  1. Remove the sensitive data from your files"
+    echo "  2. Stage the corrected files: git add <file>"
+    echo "  3. Try committing again"
+    echo ""
+    echo -e "${YELLOW}To bypass (DANGEROUS - only for false positives):${NC}"
+    echo "  git commit --no-verify"
+    echo ""
+    exit 1
+fi
+
+echo -e "${GREEN}✓ All security checks passed${NC}"
+echo ""
+exit 0

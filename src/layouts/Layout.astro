@@ -1,0 +1,43 @@
+---
+import '../styles/global.css'
+import { Background } from '../components/Background';
+import { Nav } from '../components/Nav';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'Personal MCP API - Real-time access to Daniel Miessler\'s daemon data' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://daemon.danielmiessler.com/og-image.png" />
+    <meta property="og:url" content="https://daemon.danielmiessler.com" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content="https://daemon.danielmiessler.com/og-image.png" />
+
+    <title>{title}</title>
+  </head>
+  <body class="bg-bg-primary min-h-screen overflow-x-hidden">
+    <Background client:load />
+    <Nav client:load />
+    <slot />
+  </body>
+</html>

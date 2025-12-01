@@ -1,0 +1,14 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Hero } from '../components/Hero';
+import { DaemonDashboard } from '../components/DaemonDashboard';
+---
+
+<Layout title="Daemon | Your Personal API for AI-Powered Context">
+  <main class="relative z-10">
+    <Hero client:load />
+    <section class="py-4">
+      <DaemonDashboard client:load />
+    </section>
+  </main>
+</Layout>

@@ -1,0 +1,69 @@
+#!/bin/bash
+
+# =============================================================================
+# Pre-push Hook for Daemon Public Repository
+# =============================================================================
+# Final safety check before pushing to GitHub.
+# This is a PUBLIC repo - runs one more sanity check.
+# =============================================================================
+
+set -e
+
+YELLOW='\033[0;33m'
+GREEN='\033[0;32m'
+CYAN='\033[0;36m'
+NC='\033[0m'
+
+echo -e "${CYAN}🚀 Daemon Pre-push Check${NC}"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+# Get the remote being pushed to
+REMOTE="$1"
+URL="$2"
+
+echo "Remote: $REMOTE"
+echo "URL: $URL"
+echo ""
+
+# Verify this is going to the correct remote
+if [[ "$URL" != *"danielmiessler/Daemon"* ]] && [[ "$URL" != *"danielmiessler/daemon"* ]]; then
+    echo -e "${YELLOW}⚠ WARNING: Pushing to unexpected remote${NC}"
+    echo "Expected: github.com/danielmiessler/Daemon"
+    echo "Actual: $URL"
+    echo ""
+    echo "Continue anyway? (push will proceed in 3 seconds...)"
+    sleep 3
+fi
+
+# Quick sanity check on recent commits
+echo "Checking recent commits for obvious issues..."
+
+# Get commits being pushed
+while read local_ref local_sha remote_ref remote_sha; do
+    if [ "$local_sha" = "0000000000000000000000000000000000000000" ]; then
+        # Branch deletion - allow
+        continue
+    fi
+
+    if [ "$remote_sha" = "0000000000000000000000000000000000000000" ]; then
+        # New branch - check all commits
+        RANGE="$local_sha"
+    else
+        # Existing branch - check new commits only
+        RANGE="$remote_sha..$local_sha"
+    fi
+
+    # Check for obvious secrets in commit messages (shouldn't be there)
+    SUSPICIOUS=$(git log "$RANGE" --format="%s %b" 2>/dev/null | grep -iE "(password|secret|token|api.key)" || echo "")
+    if [ -n "$SUSPICIOUS" ]; then
+        echo -e "${YELLOW}⚠ WARNING: Commit message contains suspicious words${NC}"
+        echo "This might just be descriptive (e.g., 'added password validation')"
+        echo "but please verify no actual secrets are in the commit."
+        echo ""
+    fi
+done
+
+echo -e "${GREEN}✓ Pre-push checks passed - pushing to GitHub${NC}"
+echo ""
+
+exit 0
