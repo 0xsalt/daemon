@@ -6,6 +6,9 @@ workers_dev = true
 [observability]
 enabled = false
 
+[observability.logs]
+enabled = false
+
 # Custom domain route
 routes = [
   { pattern = "daemon.danielmiessler.com", custom_domain = true }
