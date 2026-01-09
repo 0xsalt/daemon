@@ -4,6 +4,27 @@ globs: "*.ts, *.tsx, *.html, *.css, *.js, *.jsx, package.json"
 alwaysApply: false
 ---
 
+## Project Standards
+
+This project follows PAI standards (see `~/.claude/Arcana/Documentation/PROJECT-STANDARDS.md`):
+
+- **Versioning:** [Semantic Versioning 2.0.0](https://semver.org/)
+- **Changelog:** [Keep a Changelog 1.1.0](https://keepachangelog.com/) format
+- **Commits:** No AI attribution, use conventional commit types (feat/fix/docs/refactor/test/chore)
+
+When making changes:
+1. Update `CHANGELOG.md` under `[Unreleased]` section
+2. Use appropriate change categories: Added, Changed, Deprecated, Removed, Fixed, Security
+3. Bump version in package.json when releasing
+
+## Fork Information
+
+- **Upstream:** [danielmiessler/Daemon](https://github.com/danielmiessler/Daemon)
+- **Fork:** [0xsalt/daemon](https://github.com/0xsalt/daemon)
+- **Baseline:** Upstream had no releases; we start at 1.0.0 (2026-01-09)
+
+---
+
 Default to using Bun instead of Node.js.
 
 - Use `bun <file>` instead of `node <file>` or `ts-node <file>`
