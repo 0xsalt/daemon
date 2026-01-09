@@ -10,102 +10,106 @@ Content follows until the next section.
 
 [ABOUT]
 
-My name is Daniel Miessler (MEE-slur) and I'm a Cybersecurity guy turned Cyber/AI guy based out of the San Francisco Bay Area.
+I'm a 20-year Information Security veteran who pivoted hard into AI in 2025. I build open-source tools that let people own their data, their AI relationships, and their digital sovereignty.
 
-My main projects right now are Frame—an AI application building platform, Human 3.0—A system for upgrading humans to prepare for what's coming, and Threshold—an application that filters the internet by what you're guaranteed to like.
+My focus: **"The context you keep."** Building infrastructure that can't be taken away — self-hosted, privacy-first, MIT licensed.
 
-I spend most of my time thinking about how AI will change work and society. I live in the Bay Area and write at danielmiessler.com. My goal is pretty simple: help people figure out what they're meant to do with their lives, especially as the world changes rapidly around us.
+I believe autonomy and self-determination are gatekept by wealth and technical knowledge. I'm building tools to change that.
 
 [CURRENT_LOCATION]
 
-Currently home in the Bay Area
+Pacific Time Zone
 
 [MISSION]
 
-Increase human Eudaimonia by helping people identify, articulate, and pursue their own purpose in life. Build systems—heavily leveraging the latest in AI—that help people upgrade to the best possible version of themselves (Human 3.0). Transfer (or store) my and B's minds into a format that we can upload into the next (digital) version of our lives.
+Build open infrastructure for personal data sovereignty. Help people own their data, own their AI relationships, and take their context with them — not depend on companies that will monetize them or institutions that can revoke access.
+
+Bridge 20 years of security expertise with AI to ensure this technology is deployed safely and accessibly. Security-first thinking for a field moving faster than it understands.
 
 [TELOS]
 
-TELOS is my personal framework for tracking purpose and direction in life. It's a structured way to document Problems I want to solve, Missions to address them, Goals to achieve, and Metrics to track progress. The name comes from the Greek word for purpose or end goal.
+TELOS is my framework for tracking purpose and direction. It connects problems I see in the world to missions addressing them, goals to achieve, and projects making it real.
 
-Problems (P) - The most important issues I see in the world that need solving:
-- P1: People lack meaning in their lives, and this is about to get far worse because of AI and robotics taking away most traditional jobs
-- P2: People are stuck in a 1950's style hierarchical mindset that makes them think they're not one of the "special ones" with ideas and dreams
-- P3: People have poor models for how the world works, and the lack the tools to properly improve them
+Problems (P) - Issues I'm working to solve:
+- P0: Privacy as autonomy — people can't control what they share about themselves
+- P1: AI democratization — AI augmentation is stratified by wealth and access
+- P-Unified: Both are faces of the same issue — autonomy over your own life is gatekept
 
-Missions (M) - My approaches to addressing these problems:
-- M1: Increase human Eudaimonia by helping people identify, articulate, and pursue their own purpose in life
-- M2: Build systems—heavily leveraging the latest in AI—that help people upgrade to the best possible version of themselves (Human 3.0)
-- M3: Transfer (or store) my and B's minds into a format that we can upload into the next (digital) version of our lives
+Missions (M) - What I'm doing about it:
+- M1: Build open infrastructure for personal data sovereignty — MIT licensed tools that let people own their context
+- M2: Bridge security and AI — bringing security-first thinking to a field driving a Ferrari in its infancy
+
+Theme: "The context you keep."
+
+[WHAT_IM_BUILDING]
+
+- Sovereign Infrastructure: Self-hosted, privacy-first systems that don't depend on cloud providers
+- AI Partnership Tools: Memory systems and frameworks that let people own their AI relationships
+- Privacy-First Applications: Tools for controlled sharing without surveillance
+
+Everything open source. Everything MIT licensed.
 
 [FAVORITE_BOOKS]
 
-- "1929" (currently reading)
-- "Mathematica", by David Bessis
-- "Meditations" by Marcus Aurelius
-- "The Obstacle Is the Way" by Ryan Holiday
-- "Sapiens" by Yuval Noah Harari
-- "The Singularity Is Near" by Ray Kurzweil
-- "Zero to One" by Peter Thiel
-- "The Art of War" by Sun Tzu
-- "Antifragile" by Nassim Nicholas Taleb
-- "The Black Swan" by Nassim Nicholas Taleb
-- "Thinking, Fast and Slow" by Daniel Kahneman
-- "The Lean Startup" by Eric Ries
+- "Blink" by Malcolm Gladwell
+- "On Writing" by Stephen King
+- "The Long Walk" by Richard Bachman (Stephen King)
+- "Friday" by Robert Heinlein
+- "Snow Crash" by Neal Stephenson
+- "Ready Player One" by Ernest Cline
+- "Daemon" by Daniel Suarez
+- "Kill Decision" by Daniel Suarez
+- "Change Agent" by Daniel Suarez
+- "Thing Explainer" by Randall Munroe
+- "Managing Humans" by Michael Lopp
+- "Mind Games" by Richard Thieme
+- "The Baby Harvest" by Chris Rock
+- Anything by Dan Geer
+- "Misbehaving" by Richard H. Thaler
 
 [FAVORITE_MOVIES]
 
-- The Matrix
-- Pulp Fiction
-- Ex Machina
-- Blade Runner 2049
-- Her
-- Arrival
-- Interstellar
-- Gattaca
+Top 3 (no contest):
+- The Matrix — rebellion against a system designed to manipulate
+- Gladiator — deep love and driver of family
+- Inception — "it doesn't matter where we go because we'll be together"
 
-[FAVORITE_PODCASTS]
+Also:
+- Heat — raw motivation
+- Tron 1 & 2 — digital convergence
+- Memento — knowingly deceiving yourself
 
-- The Joe Rogan Experience
-- Lex Fridman Podcast
-- Huberman Lab
-- Making Sense with Sam Harris
-- The Tim Ferriss Show
+[FAVORITE_TV]
 
-[DAILY_ROUTINE]
+- Billions
+- Sakamoto Days
 
-- 8AM Wakeup
-- Outside 🚶🏼‍➡️Walk in the ☀️Sunlight for 5-10 minutes
-- Avoid inputs that could be interesting / distracting
-- 💊 Vitamins / Supplements / Nootropics
-- 🥛 Small Protein shake
-- ☕ Caffeine
-- 📅 Start agenda
-- Chipotle Bowl (Brown Rice / Black Beans) around lunch sometimes
-- Protein Shake for lunch sometimes
-- Try to walk around 5-30 minutes near dusk (not strict on this)
-- Sleep with Eye Mask and Earplugs, around 2300-1AM
+(More to add later)
 
 [PREFERENCES]
 
-- Writing tools: Neovim with Tokyo Night Storm theme
-- Programming languages: Go, Python, TypeScript
-- Operating system: macOS with extensive CLI customization
-- Coffee: Black, no sugar
-- Music: Electronic, ambient, classical
-- Exercise: Running, hiking, martial arts
-- Learning style: Reading, building, teaching
-- Communication: Direct, honest, philosophical
-- Work style: Deep focus blocks, automation-heavy
-- Values: Curiosity, growth, helping others, building useful things
+- Languages: Python, Go, TypeScript
+- Package manager: bun (never npm/yarn/pnpm)
+- Infrastructure: Self-hosted, Tailscale, zero-trust by default
+- Version control: Forgejo (self-hosted), GitHub mirrors for public
+- Work style: Deep focus, rage-build when blocked, iterate fast
+- Philosophy: Build. Break. Learn. Push. Repeat.
+- Values: Sovereignty, privacy, accessibility, open source
+
+[DAILY_ROUTINE]
+
+Deep work blocks. Short feedback loops. Automation where it matters. Pragmatism over perfection.
 
 [PREDICTIONS]
 
-- Recession-like shock caused by AI job loss by 2027 (Chances About Even)
-- We'll have AGI between 2025 and 2028 (Almost Certain)
-- Open-source models will largely catch up to closed-source models (Probable)
-- Apple is about to go from the worst AI implementation to the best (Probable)
-- Everyone, including people, will have an API (Almost Certain)
-- Personal daemons will broadcast preferences (Almost Certain)
-- Venues personalize based on customer preferences (Almost Certain)
-- People will lack meaning and look for it in games (Almost Certain)
+(To be added — currently observing, not predicting)
+
+[PHILOSOPHY]
+
+"This isn't about building another platform that owns your data. It's about building tools that free you to move fast, stay light, and own your momentum."
+
+Rapid Development. High-Signal Feedback Loops. Sovereign Infrastructure.
+
+---
+
+*Last updated: 2026-01-09*

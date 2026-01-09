@@ -1,73 +1,77 @@
 # TELOS Framework
 
-TELOS is my personal framework for tracking purpose and direction in life. It's a structured approach to understanding problems, defining missions, setting goals, and measuring progress.
+TELOS is my personal framework for tracking purpose and direction. It's a structured approach to understanding problems, defining missions, and building toward something that matters.
+
+## The Core Thesis
+
+**I believe autonomy and self-determination are gatekept by wealth and technical knowledge.** Whether it's control over what you reveal (privacy) or control over what you can become (AI augmentation) — the average person is locked out.
+
+So I build tools that change that.
 
 ## Problems (P)
 
-The fundamental issues I see in the world that need addressing:
+The fundamental issues I see in the world:
 
-### P1: People lack meaning in their lives
-- Modern society has disconnected us from purpose
-- Technology often increases isolation rather than connection
-- Work has become disconnected from personal values
+### P0: Privacy as Autonomy
 
-### P2: People are stuck in outdated hierarchical mindsets
-- 1950s organizational structures in a 2020s world
-- Command-and-control thinking in an age of networks
-- Resistance to distributed, collaborative models
+The average person cannot control what they share about themselves. Privacy isn't about hiding — it's about the fundamental right to reveal exactly and only what you choose. This control is currently available only to those with technical knowledge or money.
 
-### P3: Humanity is unprepared for AI transformation
-- Lack of understanding about AI capabilities and limitations
-- No frameworks for human-AI collaboration
-- Risk of increasing inequality and displacement
+### P1: AI Democratization
+
+Human-AI convergence is happening, but access is stratified. AI should not be a tool only for elites. People everywhere should be able to augment and enhance themselves without being middle-class or above. The technology that could level playing fields is instead deepening divides.
+
+### The Unified Problem
+
+Both P0 and P1 are faces of the same issue: **autonomy over your own life is gatekept**. I'm working on both fronts.
 
 ## Missions (M)
 
-My response to these problems through focused action:
+My response to these problems:
 
-### M1: Increase human Eudaimonia (flourishing)
-- Create content that helps people find meaning
-- Build tools that augment human capability
-- Foster communities of growth and learning
+### M1: Build Open Infrastructure for Personal Data Sovereignty
 
-### M2: Build AI-augmented systems for human benefit
-- Develop frameworks like Fabric for AI augmentation
-- Create accessible tools for everyone
-- Focus on human-centric AI design
+Building tools — all MIT licensed — that let people:
+- Own their data
+- Own their AI relationships
+- Take their context with them
+- Not depend on companies that will monetize them or institutions that can revoke access
 
-### M3: Create frameworks for understanding complex systems
-- Simplify complexity without losing nuance
-- Build mental models for modern challenges
-- Share knowledge openly and freely
+The theme: **"The context you keep."**
 
-## Goals (G)
+### M2: Bridge Security and AI
 
-Specific, measurable outcomes I'm working toward:
+Leveraging 20 years of Information Security expertise to ensure AI is deployed safely and accessibly. Bringing security-first thinking to a field that's moving faster than it understands.
 
-### G1: Reach 1M people with meaningful content
-- Grow Unsupervised Learning newsletter
-- Create viral, educational content
-- Build lasting resources
+## What I'm Building
 
-### G2: Build tools that augment human capability
-- Fabric framework adoption
-- Daemon personal API system
-- Open source contributions
+**Sovereign Infrastructure**: Self-hosted, privacy-first, local-first systems that don't depend on cloud providers or platforms that can revoke access.
 
-### G3: Foster critical thinking and creativity
-- Educational content and courses
-- Community building
-- Mentorship and collaboration
+**AI Partnership Tools**: Memory systems, persona generators, and frameworks that let people own their relationship with AI — not rent it from a corporation.
 
-## Metrics (KPIs)
+**Privacy-First Applications**: Tools that let people share what they want, when they want, with whom they want — and nothing more.
 
-How I measure progress:
+Everything open source. Everything MIT licensed. Because this shouldn't be just for elites.
 
-- **Reach**: Newsletter subscribers, content views, tool downloads
-- **Impact**: User testimonials, success stories, community growth
-- **Quality**: Depth of engagement, return visitors, active users
-- **Innovation**: New tools created, problems solved, frameworks developed
+## The Philosophy
+
+> "This isn't about building another platform that owns your data. It's about building tools that free you to move fast, stay light, and own your momentum."
+
+**Rapid Development. High-Signal Feedback Loops. Sovereign Infrastructure.**
+
+Build. Break. Learn. Push. Repeat.
+
+## Background
+
+- 20 years in Information Security
+- 2025: Pivoted hard into AI — 12 months of intense study, building, failing, rebuilding
+- 2026: Entering enterprise AI evaluation role while continuing to build open tools
+- Always: Building infrastructure that can't be taken away
+
+## Connect
+
+- Blog: [0xsalt.github.io](https://0xsalt.github.io)
+- Building in public, sharing what works
 
 ---
 
-*TELOS is a living framework that evolves as I learn and grow. It's not about rigid adherence to a plan, but about having a north star to guide decisions and actions.*
+*TELOS is a living framework. It evolves as I learn. The north star stays fixed: build tools that give people sovereignty over their own lives.*
