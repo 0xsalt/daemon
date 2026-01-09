@@ -8,17 +8,17 @@
 
 ## NOW
 
-- [ ] Fix /telos page content (`src/pages/telos.astro` has upstream author's TELOS hardcoded)
+- [ ] `[local]` Fix /telos page content (`src/pages/telos.astro` has upstream author's TELOS hardcoded)
 
 ## BACKLOG
 
-- [ ] Document fork deployment steps → `docs/FORK-SETUP.md` (draft)
-- [ ] Research: Deploy MCP server or configure worker for JSON-RPC (API currently returns 405)
-- [ ] Research: Audit legacy VitePress components for unused code
+- [ ] `[local]` Document fork deployment steps → `docs/FORK-SETUP.md` (draft)
+- [ ] `[local]` Research: Deploy MCP server or configure worker for JSON-RPC (API currently returns 405)
+- [ ] `[upstream]` Research: Audit legacy VitePress components for unused code
 
 ## ROADMAP
 
-- [ ] Single source of truth: build-time parser for daemon.md (upstream contribution candidate, see `docs/ROADMAP.md`)
+- [ ] `[upstream]` Single source of truth: build-time parser for daemon.md (upstream contribution candidate, see `docs/ROADMAP.md`)
 
 ## DONE
 
