@@ -28,10 +28,13 @@ This is [0xsalt](https://github.com/0xsalt)'s fork of [danielmiessler/Daemon](ht
 | Branch | Purpose |
 |--------|---------|
 | `main` | Personal deployment at [daemon.saltedkeys.io](https://daemon.saltedkeys.io) |
-| `upstream-main` | Clean tracking of upstream (for contributions) |
 | `feature/*` | Changes staged for upstream PRs |
 
-**For upstream contributions:** Browse `feature/*` branches or see open PRs targeting `upstream-main`.
+**Docs:**
+- [BACKLOG](docs/BACKLOG.md) - Work tracking
+- [FORK-SETUP](docs/FORK-SETUP.md) - Deployment checklist
+- [ROADMAP](docs/ROADMAP.md) - Planned features
+- [ADR](docs/adr/) - Architecture decisions
 
 ---
 
