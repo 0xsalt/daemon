@@ -23,6 +23,25 @@ When making changes:
 - **Fork:** [0xsalt/daemon](https://github.com/0xsalt/daemon)
 - **Baseline:** Upstream had no releases; we start at 1.0.0 (2026-01-09)
 
+## Branching Strategy
+
+| Branch | Purpose | Contains Personal Content? |
+|--------|---------|---------------------------|
+| `main` | Deployed personal site | YES |
+| `upstream-main` | Clean branch tracking upstream | NO |
+
+**Remotes:**
+- `origin` = your fork (0xsalt/daemon) - push here
+- `upstream` = original repo (danielmiessler/Daemon) - pull from here
+
+**Workflow:**
+- **Never commit directly to main** - always use branches, merge when ready
+- `dev/*` branches for personal site improvements (branch from main)
+- `feature/*`, `bug/*` branches for upstream PRs (branch from upstream-main)
+- Sync upstream: `git fetch upstream && git checkout upstream-main && git merge upstream/main`
+
+**Never PR from main** - it contains personal identity data.
+
 ---
 
 Default to using Bun instead of Node.js.
