@@ -133,7 +133,7 @@ function StatusBar({
       className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-border-default bg-bg-secondary/80 backdrop-blur-sm px-4 py-3 mb-6"
     >
       <div className="flex items-center gap-4">
-        <span className="font-mono font-bold text-sm text-accent">DAEMON://MIESSLER</span>
+        <span className="font-mono font-bold text-sm text-accent">DAEMON://CONTEXT-YOU-KEEP</span>
         <div className="flex items-center gap-2">
           <span className={`w-2 h-2 rounded-full ${isConnected ? 'bg-success animate-pulse-slow' : 'bg-error'}`} />
           <span className="font-mono text-xs text-text-secondary">
@@ -165,51 +165,71 @@ export function DaemonDashboard() {
   }, []);
 
   async function fetchDaemonData() {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const toolsResponse = await fetch('https://mcp.daemon.danielmiessler.com', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ jsonrpc: '2.0', method: 'tools/list', id: 1 })
-      });
-
-      if (toolsResponse.ok) {
-        const toolsData = await toolsResponse.json();
-        setToolCount(toolsData.result?.tools?.length || 0);
-      }
-
-      const dataResponse = await fetch('https://mcp.daemon.danielmiessler.com', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          jsonrpc: '2.0',
-          method: 'tools/call',
-          params: { name: 'get_all', arguments: {} },
-          id: 2
-        })
-      });
-
-      if (dataResponse.ok) {
-        const response = await dataResponse.json();
-        if (response.result?.content?.[0]?.text) {
-          const data = JSON.parse(response.result.content[0].text);
-          setDaemonData(data);
-          setIsConnected(true);
-        } else {
-          throw new Error('Invalid response format');
-        }
-      } else {
-        throw new Error(`HTTP ${dataResponse.status}`);
-      }
-    } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Unknown error';
-      setError(`Connection failed: ${message}`);
-      setIsConnected(false);
-    } finally {
-      setLoading(false);
-    }
+    // Static data - no MCP fetch needed
+    setToolCount(10);
+    setDaemonData({
+      about: "I'm a 20-year Information Security veteran who pivoted hard into AI in 2025. I build open-source tools that let people own their data, their AI relationships, and their digital sovereignty.",
+      mission: "Build open infrastructure for personal data sovereignty. Help people own their data, own their AI relationships, and take their context with them — not depend on companies that will monetize them or institutions that can revoke access. Bridge 20 years of security expertise with AI to ensure this technology is deployed safely and accessibly.",
+      telos: [
+        "P0: Privacy as autonomy — people can't control what they share about themselves",
+        "P1: AI democratization — AI augmentation is stratified by wealth and access",
+        "M1: Build open infrastructure for personal data sovereignty — MIT licensed tools",
+        "M2: Bridge security and AI — bringing security-first thinking to AI"
+      ],
+      current_location: "Pacific Time Zone",
+      preferences: [
+        "Languages: Python, Go, TypeScript",
+        "Package manager: bun (never npm/yarn/pnpm)",
+        "Infrastructure: Self-hosted, Tailscale, zero-trust by default",
+        "Version control: Forgejo (self-hosted), GitHub mirrors for public",
+        "Philosophy: Build. Break. Learn. Push. Repeat."
+      ],
+      daily_routine: [
+        "Deep work blocks",
+        "Short feedback loops",
+        "Automation where it matters",
+        "Pragmatism over perfection"
+      ],
+      favorite_books: [
+        '"Blink" by Malcolm Gladwell',
+        '"On Writing" by Stephen King',
+        '"The Long Walk" by Richard Bachman (Stephen King)',
+        '"Friday" by Robert Heinlein',
+        '"Snow Crash" by Neal Stephenson',
+        '"Ready Player One" by Ernest Cline',
+        '"Daemon" by Daniel Suarez',
+        '"Kill Decision" by Daniel Suarez',
+        '"Change Agent" by Daniel Suarez',
+        '"Thing Explainer" by Randall Munroe',
+        '"Managing Humans" by Michael Lopp',
+        '"Mind Games" by Richard Thieme',
+        '"The Baby Harvest" by Chris Rock',
+        'Anything by Dan Geer',
+        '"Misbehaving" by Richard H. Thaler'
+      ],
+      favorite_movies: [
+        "The Matrix — rebellion against a system designed to manipulate",
+        "Gladiator — deep love and driver of family",
+        "Inception — it doesn't matter where we go because we'll be together",
+        "Heat — raw motivation",
+        "Tron 1 & 2 — digital convergence",
+        "Memento — knowingly deceiving yourself"
+      ],
+      predictions: [
+        "Observing, not predicting"
+      ],
+      projects: {
+        technical: [
+          "Sovereign Infrastructure: Self-hosted, privacy-first systems",
+          "AI Partnership Tools: Memory systems and frameworks",
+          "Privacy-First Applications: Tools for controlled sharing",
+          "The Context You Keep: https://context-you-keep.ai"
+        ]
+      },
+      last_updated: "2026-01-09"
+    });
+    setIsConnected(true);
+    setLoading(false);
   }
 
   function extractTelosId(item: string): string {
@@ -355,7 +375,7 @@ export function DaemonDashboard() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="rounded-xl border border-border-default bg-bg-secondary/80 backdrop-blur-sm pt-5 px-5 pb-2 flex flex-col max-h-64"
+            className="rounded-xl border border-border-default bg-bg-secondary/80 backdrop-blur-sm pt-5 px-5 pb-2 flex flex-col max-h-96"
           >
             <div className="flex items-center justify-between mb-3 shrink-0">
               <div className="flex items-center gap-2">
@@ -492,7 +512,7 @@ export function DaemonDashboard() {
             <Server className="w-5 h-5 text-text-tertiary" />
             <span className="font-mono text-sm font-semibold tracking-wider text-text-tertiary uppercase">API Access</span>
           </div>
-          <code className="font-mono text-base text-brand block mb-3">mcp.daemon.danielmiessler.com</code>
+          <code className="font-mono text-base text-brand block mb-3">daemon.saltedkeys.io</code>
           <p className="text-sm text-text-tertiary mb-4">Connect your AI assistant directly</p>
           <a
             href="/api/"
