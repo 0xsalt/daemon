@@ -4,9 +4,6 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) + [SemVer](http
 
 ## [Unreleased]
 
-### Fixed
-- *(pending)* /telos page content (src/pages/telos.astro still has upstream content)
-
 ## [1.1.0] - 2026-01-09
 
 Identity customization and deployment configuration.
@@ -17,7 +14,7 @@ Identity customization and deployment configuration.
 
 ### Changed
 - Identity content replaced in daemon.md, DaemonDashboard.tsx, Hero.tsx, cms/telos.md
-- Deployment configured for Cloudflare Pages ("context-you-keep")
+- Deployment configured for Cloudflare Pages (daemon.saltedkeys.io)
 - API docs updated with placeholder URLs
 - Branding updated to "The Context You Keep"
 
@@ -28,7 +25,7 @@ Fork setup and documentation.
 ### Added
 - Architecture decision records (ADR-001)
 - Project standards in CLAUDE.md
-- Issue tracking (docs/ISSUES.md)
+- Backlog tracking (docs/BACKLOG.md)
 - Roadmap placeholder (docs/ROADMAP.md)
 
 ### Changed
@@ -41,7 +38,7 @@ Initial fork from [danielmiessler/Daemon](https://github.com/danielmiessler/Daem
 
 Upstream had no releases; 1.0.0 establishes baseline. Includes Astro site, daemon.md identity format, dashboard, TELOS page, API docs, and Cloudflare Pages config.
 
-See `docs/ISSUES.md` for known issues.
+See `docs/BACKLOG.md` for work items.
 
 [Unreleased]: https://github.com/0xsalt/daemon/compare/v1.1.0...HEAD
 [1.1.0]: https://github.com/0xsalt/daemon/compare/v1.0.1...v1.1.0

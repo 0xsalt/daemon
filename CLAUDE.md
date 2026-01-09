@@ -6,7 +6,7 @@ alwaysApply: false
 
 ## Project Standards
 
-This project follows PAI standards (see `~/.claude/Arcana/Documentation/PROJECT-STANDARDS.md`):
+This project follows Arcana ecosystem standards (see `~/.claude/Arcana/Documentation/PROJECT-STANDARDS.md`):
 
 - **Versioning:** [Semantic Versioning 2.0.0](https://semver.org/)
 - **Changelog:** [Keep a Changelog 1.1.0](https://keepachangelog.com/) format
@@ -21,7 +21,7 @@ When making changes:
 
 - **Upstream:** [danielmiessler/Daemon](https://github.com/danielmiessler/Daemon)
 - **Fork:** [0xsalt/daemon](https://github.com/0xsalt/daemon)
-- **Baseline:** Upstream had no releases; we start at 1.0.0 (2026-01-09)
+- **Baseline:** Upstream had no versioned releases; we start at 1.0.0 (2026-01-09)
 
 ## Branching Strategy
 
