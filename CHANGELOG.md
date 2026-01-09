@@ -4,6 +4,15 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) + [SemVer](http
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-01-09
+
+TELOS page customization and dev environment setup.
+
+### Changed
+- `[local]` /telos page content replaced with 0xsalt's TELOS framework
+- `[local]` Dev server binds to 0.0.0.0 with allowedHosts for tailscale access
+- `[local]` Backlog/changelog items tagged `[local]` vs `[upstream]`
+
 ## [1.1.0] - 2026-01-09
 
 Identity customization and deployment configuration.
@@ -40,7 +49,8 @@ Upstream had no releases; 1.0.0 establishes baseline. Includes Astro site, daemo
 
 See `docs/BACKLOG.md` for work items.
 
-[Unreleased]: https://github.com/0xsalt/daemon/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/0xsalt/daemon/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/0xsalt/daemon/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/0xsalt/daemon/compare/v1.0.1...v1.1.0
 [1.0.1]: https://github.com/0xsalt/daemon/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/0xsalt/daemon/releases/tag/v1.0.0
