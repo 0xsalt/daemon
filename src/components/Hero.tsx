@@ -6,27 +6,8 @@ export function Hero() {
   const [location, setLocation] = useState('Loading...');
 
   useEffect(() => {
-    async function fetchLocation() {
-      try {
-        const response = await fetch('https://mcp.daemon.danielmiessler.com', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            jsonrpc: '2.0',
-            method: 'tools/call',
-            params: { name: 'get_current_location', arguments: {} },
-            id: 1
-          })
-        });
-        const data = await response.json();
-        if (data.result?.content?.[0]?.text) {
-          setLocation(data.result.content[0].text);
-        }
-      } catch {
-        setLocation('Bay Area');
-      }
-    }
-    fetchLocation();
+    // Static location - no MCP fetch needed
+    setLocation('Pacific Time Zone');
   }, []);
   return (
     <section className="relative pt-28 pb-6 px-6">
@@ -54,10 +35,7 @@ export function Hero() {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="font-heading text-lg text-text-secondary mb-3"
         >
-          Personal MCP API for{' '}
-          <a href="https://danielmiessler.com" className="text-brand hover:underline">
-            Daniel Miessler
-          </a>
+          <a href="https://context-you-keep.ai" className="text-brand hover:underline">The Context You Keep</a>
         </motion.p>
 
         <motion.p
@@ -66,7 +44,7 @@ export function Hero() {
           transition={{ duration: 0.5, delay: 0.15 }}
           className="font-body text-lg text-text-secondary max-w-2xl mx-auto mb-5"
         >
-          My vision of the future where technology's primary role is to enable human connection. Daemons are live views into what a person is doing and what they care about for the purpose of connecting with others with similar interests.
+          Building open infrastructure for personal data sovereignty. Privacy-first, self-hosted, MIT licensed. Your data, your AI relationships, your context.
         </motion.p>
 
         {/* Location */}

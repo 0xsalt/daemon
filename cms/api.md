@@ -5,8 +5,10 @@ The Daemon API provides programmatic access to personal information, projects, a
 ## Base URL
 
 ```
-https://daemon.danielmiessler.com
+https://YOUR_DOMAIN_HERE
 ```
+
+*Update this after deploying to Cloudflare Workers*
 
 ## Protocol
 
@@ -23,7 +25,7 @@ Currently, the API is publicly accessible. Future versions may include authentic
 Get a list of all available endpoints:
 
 ```bash
-curl -X POST https://daemon.danielmiessler.com \
+curl -X POST https://YOUR_DOMAIN_HERE \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -37,7 +39,7 @@ curl -X POST https://daemon.danielmiessler.com \
 Execute a specific tool to retrieve data:
 
 ```bash
-curl -X POST https://daemon.danielmiessler.com \
+curl -X POST https://YOUR_DOMAIN_HERE \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -54,15 +56,16 @@ curl -X POST https://daemon.danielmiessler.com \
 
 | Endpoint | Description | Response Type |
 |----------|-------------|---------------|
-| `get_about` | Basic information about Daniel Miessler | Text |
-| `get_narrative` | Personal narrative and focus areas | Text |
+| `get_about` | Basic information | Text |
 | `get_mission` | Current mission statement | Text |
-| `get_projects` | List of active projects | Text |
 | `get_telos` | Complete TELOS framework | Structured Text |
+| `get_what_im_building` | Current projects and focus areas | Text |
 | `get_favorite_books` | Recommended reading list | List |
 | `get_favorite_movies` | Film recommendations | List |
-| `get_current_location` | Current city/location | Text |
+| `get_current_location` | Current timezone/location | Text |
 | `get_preferences` | Work style and preferences | Text |
+| `get_predictions` | Predictions about the future | List |
+| `get_philosophy` | Core philosophy | Text |
 | `get_all` | All available data | JSON |
 | `get_section` | Specific section by name | Text |
 
@@ -102,7 +105,7 @@ Errors are returned with appropriate error codes:
 
 ## Rate Limiting
 
-The API currently has generous rate limits:
+The API has reasonable rate limits:
 - 1000 requests per hour per IP
 - Burst of up to 10 requests per second
 
@@ -116,7 +119,7 @@ To use Daemon with MCP-compatible tools like Claude Code:
 {
   "mcpServers": {
     "daemon": {
-      "url": "https://daemon.danielmiessler.com"
+      "url": "https://YOUR_DOMAIN_HERE"
     }
   }
 }
@@ -132,7 +135,7 @@ To use Daemon with MCP-compatible tools like Claude Code:
 import requests
 import json
 
-url = "https://daemon.danielmiessler.com"
+url = "https://YOUR_DOMAIN_HERE"
 headers = {"Content-Type": "application/json"}
 
 # Get TELOS framework
@@ -155,7 +158,7 @@ print(data["result"]["content"][0]["text"])
 
 ```javascript
 async function getDaemonData(tool) {
-  const response = await fetch('https://daemon.danielmiessler.com', {
+  const response = await fetch('https://YOUR_DOMAIN_HERE', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -170,7 +173,7 @@ async function getDaemonData(tool) {
       id: 1
     })
   });
-  
+
   const data = await response.json();
   return data.result.content[0].text;
 }
@@ -184,12 +187,10 @@ console.log(telos);
 
 The Daemon API is continuously updated with new information. Check the `last_updated` field in responses for freshness.
 
-## Support
+## Connect
 
-For issues or questions:
-- GitHub: [@danielmiessler](https://github.com/danielmiessler)
-- Twitter: [@danielmiessler](https://twitter.com/danielmiessler)
+- Blog: [0xsalt.github.io](https://0xsalt.github.io)
 
 ---
 
-*The Daemon API is part of the broader vision of everything having an API, as described in "The Real Internet of Things" (2016).*
+*The Daemon API is part of a vision where everyone has a personal API — a structured, queryable interface to who they are and what they're about.*
