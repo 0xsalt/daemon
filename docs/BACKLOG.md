@@ -8,11 +8,9 @@
 
 ## NOW
 
-- [ ] `[local]` Fix /telos page content (`src/pages/telos.astro` has upstream author's TELOS hardcoded)
+- [ ] `[local]` Document fork deployment steps → `docs/FORK-SETUP.md` (draft)
 
 ## BACKLOG
-
-- [ ] `[local]` Document fork deployment steps → `docs/FORK-SETUP.md` (draft)
 - [ ] `[local]` Research: Deploy MCP server or configure worker for JSON-RPC (API currently returns 405)
 - [ ] `[upstream]` Research: Audit legacy VitePress components for unused code
 
@@ -22,7 +20,7 @@
 
 ## DONE
 
-*(Move items here with completion date)*
+- [x] `[local]` Fix /telos page content [2026-01-09]
 
 ## APPENDIX: Architecture Notes
 
