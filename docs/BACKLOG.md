@@ -8,10 +8,9 @@
 
 ## NOW
 
-- [ ] `[local]` Document fork deployment steps → `docs/FORK-SETUP.md` (draft)
+- [ ] `[local]` Research: Deploy MCP server or configure worker for JSON-RPC (API currently returns 405)
 
 ## BACKLOG
-- [ ] `[local]` Research: Deploy MCP server or configure worker for JSON-RPC (API currently returns 405)
 - [ ] `[upstream]` Research: Audit legacy VitePress components for unused code
 
 ## ROADMAP
@@ -20,6 +19,7 @@
 
 ## DONE
 
+- [x] `[local]` Document fork deployment steps → `docs/FORK-SETUP.md` [2026-01-09]
 - [x] `[local]` Fix /telos page content [2026-01-09]
 
 ## APPENDIX: Architecture Notes
