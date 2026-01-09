@@ -31,9 +31,9 @@ This is [0xsalt](https://github.com/0xsalt)'s fork of [danielmiessler/Daemon](ht
 | `feature/*` | Changes staged for upstream PRs |
 
 **Docs:**
-- [BACKLOG](docs/BACKLOG.md) - Work tracking
 - [FORK-SETUP](docs/FORK-SETUP.md) - Deployment checklist
 - [ROADMAP](docs/ROADMAP.md) - Planned features
+- [BACKLOG](docs/BACKLOG.md) - Work tracking
 - [ADR](docs/adr/) - Architecture decisions
 
 ---
