@@ -9,14 +9,29 @@
 </p>
 
 <p align="center">
-  <a href="https://daemon.danielmiessler.com">Live Site</a> ·
-  <a href="https://danielmiessler.com/blog/real-internet-of-things">The Real Internet of Things</a> ·
-  <a href="https://danielmiessler.com/blog/human-3-creator-revolution">Human 3.0</a>
+  <a href="https://daemon.saltedkeys.io">Live Site</a> ·
+  <a href="https://github.com/danielmiessler/Daemon">Upstream</a> ·
+  <a href="https://danielmiessler.com/blog/real-internet-of-things">The Real Internet of Things</a>
 </p>
 
 <p align="center">
   <img src="public/screenshot.png" alt="Daemon Dashboard" width="800">
 </p>
+
+---
+
+## Fork Notice
+
+This is [0xsalt](https://github.com/0xsalt)'s fork of [danielmiessler/Daemon](https://github.com/danielmiessler/Daemon).
+
+**Branches:**
+| Branch | Purpose |
+|--------|---------|
+| `main` | Personal deployment at [daemon.saltedkeys.io](https://daemon.saltedkeys.io) |
+| `upstream-main` | Clean tracking of upstream (for contributions) |
+| `feature/*` | Changes staged for upstream PRs |
+
+**For upstream contributions:** Browse `feature/*` branches or see open PRs targeting `upstream-main`.
 
 ---
 
