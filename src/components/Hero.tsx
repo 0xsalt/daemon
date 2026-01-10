@@ -1,33 +1,9 @@
 import { motion } from 'framer-motion';
 import { Terminal, Zap, Globe, MapPin } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { heroData } from '../generated/daemon-data';
 
 export function Hero() {
-  const [location, setLocation] = useState('Loading...');
-
-  useEffect(() => {
-    async function fetchLocation() {
-      try {
-        const response = await fetch('https://mcp.daemon.danielmiessler.com', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            jsonrpc: '2.0',
-            method: 'tools/call',
-            params: { name: 'get_current_location', arguments: {} },
-            id: 1
-          })
-        });
-        const data = await response.json();
-        if (data.result?.content?.[0]?.text) {
-          setLocation(data.result.content[0].text);
-        }
-      } catch {
-        setLocation('Bay Area');
-      }
-    }
-    fetchLocation();
-  }, []);
+  const location = heroData.location;
   return (
     <section className="relative pt-28 pb-6 px-6">
       <div className="max-w-4xl mx-auto text-center">

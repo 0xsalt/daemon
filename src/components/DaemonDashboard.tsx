@@ -1,6 +1,7 @@
 import { useState, useEffect, Component } from 'react';
 import type { ReactNode } from 'react';
 import { motion } from 'framer-motion';
+import { daemonData as generatedData, toolCount as generatedToolCount } from '../generated/daemon-data';
 import {
   Target,
   Compass,
@@ -165,51 +166,25 @@ export function DaemonDashboard() {
   }, []);
 
   async function fetchDaemonData() {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const toolsResponse = await fetch('https://mcp.daemon.danielmiessler.com', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ jsonrpc: '2.0', method: 'tools/list', id: 1 })
-      });
-
-      if (toolsResponse.ok) {
-        const toolsData = await toolsResponse.json();
-        setToolCount(toolsData.result?.tools?.length || 0);
-      }
-
-      const dataResponse = await fetch('https://mcp.daemon.danielmiessler.com', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          jsonrpc: '2.0',
-          method: 'tools/call',
-          params: { name: 'get_all', arguments: {} },
-          id: 2
-        })
-      });
-
-      if (dataResponse.ok) {
-        const response = await dataResponse.json();
-        if (response.result?.content?.[0]?.text) {
-          const data = JSON.parse(response.result.content[0].text);
-          setDaemonData(data);
-          setIsConnected(true);
-        } else {
-          throw new Error('Invalid response format');
-        }
-      } else {
-        throw new Error(`HTTP ${dataResponse.status}`);
-      }
-    } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Unknown error';
-      setError(`Connection failed: ${message}`);
-      setIsConnected(false);
-    } finally {
-      setLoading(false);
-    }
+    // Data loaded from generated file (parsed from daemon.md at build time)
+    setToolCount(generatedToolCount);
+    setDaemonData({
+      about: generatedData.about,
+      mission: generatedData.mission,
+      telos: generatedData.telos,
+      current_location: generatedData.currentLocation,
+      preferences: generatedData.preferences,
+      daily_routine: generatedData.dailyRoutine,
+      favorite_books: generatedData.favoriteBooks,
+      favorite_movies: generatedData.favoriteMovies,
+      predictions: generatedData.predictions,
+      projects: {
+        technical: generatedData.whatImBuilding,
+      },
+      last_updated: generatedData.lastUpdated,
+    });
+    setIsConnected(true);
+    setLoading(false);
   }
 
   function extractTelosId(item: string): string {
