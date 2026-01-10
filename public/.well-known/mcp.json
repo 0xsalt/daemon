@@ -1,12 +1,12 @@
 {
-  "mcp_server": "https://daemon-mcp.saltedkeys.workers.dev",
+  "mcp_server": "https://mcp.daemon.saltedkeys.io",
   "transports": {
     "json-rpc": {
-      "url": "https://daemon-mcp.saltedkeys.workers.dev/",
+      "url": "https://mcp.daemon.saltedkeys.io/",
       "method": "POST"
     },
     "sse": {
-      "url": "https://daemon-mcp.saltedkeys.workers.dev/sse"
+      "url": "https://mcp.daemon.saltedkeys.io/sse"
     }
   },
   "tools": 14,

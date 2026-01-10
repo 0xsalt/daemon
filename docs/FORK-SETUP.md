@@ -251,14 +251,24 @@ curl -X POST https://daemon-mcp.YOUR-ACCOUNT.workers.dev/ \
 
 To use a custom subdomain like `mcp.daemon.yourdomain.com`:
 
-1. Add DNS CNAME record pointing to `daemon-mcp.YOUR-ACCOUNT.workers.dev`
+**Important:** Do NOT manually create a CNAME record first. Wrangler manages the DNS record automatically when using `custom_domain: true`.
+
+1. Ensure your domain uses Cloudflare DNS (the zone must exist in your Cloudflare account)
 2. Update `wrangler.jsonc`:
    ```json
+   "workers_dev": true,
    "routes": [
      { "pattern": "mcp.daemon.yourdomain.com", "custom_domain": true }
    ]
    ```
-3. Redeploy: `npx wrangler deploy`
+3. Deploy: `npx wrangler deploy`
+4. Wrangler creates the DNS record and provisions SSL automatically
+
+**If you already created a CNAME manually:** Delete it in Cloudflare Dashboard → DNS, then redeploy. Wrangler will create the correct record.
+
+**Troubleshooting:**
+- "Hostname not covered by certificate" → Delete manual CNAME, let wrangler manage it
+- "Hostname already has externally managed DNS records" → Same fix, delete the CNAME first
 
 ### Update API Documentation
 
