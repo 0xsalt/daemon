@@ -1,0 +1,15 @@
+{
+  "mcp_server": "https://daemon-mcp.saltedkeys.workers.dev",
+  "transports": {
+    "json-rpc": {
+      "url": "https://daemon-mcp.saltedkeys.workers.dev/",
+      "method": "POST"
+    },
+    "sse": {
+      "url": "https://daemon-mcp.saltedkeys.workers.dev/sse"
+    }
+  },
+  "tools": 14,
+  "version": "1.0.0",
+  "spec": "https://modelcontextprotocol.io"
+}
