@@ -175,7 +175,100 @@ alias daemon-deploy='cd ~/path/to/daemon && bun run build && wrangler pages depl
 
 ---
 
-## 6. Custom Domain (Optional)
+## 6. MCP Server (JSON-RPC API)
+
+The static site serves human visitors. The **MCP server** serves AI agents via JSON-RPC.
+
+**Architecture:**
+```
+your-project.pages.dev     → Static website (Cloudflare Pages)
+daemon-mcp.workers.dev     → MCP JSON-RPC API (Cloudflare Worker)
+```
+
+### Create MCP Worker Project
+
+```bash
+# Create sibling directory for MCP server
+cd ~/path/to/projects  # parent of daemon/
+mkdir daemon-mcp && cd daemon-mcp
+
+# Scaffold using Cloudflare MCP template
+bunx create-cloudflare@latest . \
+  --template=cloudflare/ai/demos/remote-mcp-authless --no-git
+
+# Install dependencies
+bun install
+```
+
+### Customize for Your Daemon
+
+Replace `src/index.ts` with Daemon-specific implementation that:
+1. Fetches your `daemon.md` from the static site
+2. Parses sections by `[SECTION_NAME]` headers
+3. Exposes tools: `get_about`, `get_telos`, `get_mission`, etc.
+
+See reference implementation: `https://github.com/0xsalt/daemon-mcp`
+
+**Key configuration in `wrangler.jsonc`:**
+```json
+{
+  "name": "daemon-mcp",
+  "main": "src/index.ts",
+  "compatibility_flags": ["nodejs_compat"],
+  "durable_objects": {
+    "bindings": [{ "class_name": "DaemonMCP", "name": "MCP_OBJECT" }]
+  }
+}
+```
+
+### Deploy MCP Server
+
+```bash
+# Copy your Cloudflare token
+cp ~/path/to/daemon/.env .
+
+# Deploy
+npx wrangler deploy
+```
+
+**MCP URL:** `https://daemon-mcp.YOUR-ACCOUNT.workers.dev`
+
+### Test MCP Endpoint
+
+```bash
+# List available tools
+curl -X POST https://daemon-mcp.YOUR-ACCOUNT.workers.dev/ \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","method":"tools/list","id":1}'
+
+# Call a tool
+curl -X POST https://daemon-mcp.YOUR-ACCOUNT.workers.dev/ \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","method":"tools/call","params":{"name":"get_telos","arguments":{}},"id":2}'
+```
+
+### Custom MCP Domain (Optional)
+
+To use a custom subdomain like `mcp.daemon.yourdomain.com`:
+
+1. Add DNS CNAME record pointing to `daemon-mcp.YOUR-ACCOUNT.workers.dev`
+2. Update `wrangler.jsonc`:
+   ```json
+   "routes": [
+     { "pattern": "mcp.daemon.yourdomain.com", "custom_domain": true }
+   ]
+   ```
+3. Redeploy: `npx wrangler deploy`
+
+### Update API Documentation
+
+After deploying MCP server, update your `/api` page:
+- Change base URL from placeholder to your MCP endpoint
+- Update examples with your actual URL
+
+---
+
+## 7. Custom Domain (Optional)
 
 1. Open Cloudflare Dashboard → Workers & Pages → Your Project → Custom Domains
 2. Add your domain (must use Cloudflare DNS)
@@ -219,6 +312,13 @@ Run through this checklist after setup:
 - [ ] `README.md` has no `danielmiessler.com` links (or shows "forked from" attribution only)
 - [ ] `grep -r "danielmiessler" src/` returns no results
 
+### MCP Server Working (Optional)
+
+- [ ] MCP worker deployed to `daemon-mcp.YOUR-ACCOUNT.workers.dev`
+- [ ] `tools/list` returns your tools (14 tools)
+- [ ] `tools/call` with `get_telos` returns your TELOS content
+- [ ] `/api` page updated with your MCP endpoint URL
+
 ---
 
 ## Troubleshooting
@@ -240,7 +340,7 @@ Wrangler prompts for account ID on first deploy. Select your account; Wrangler c
 
 ### 405 on /api endpoint
 
-The MCP server (JSON-RPC API) requires a separate Cloudflare Worker. The static site works without it. See `docs/BACKLOG.md` for MCP server research.
+The `/api` page is documentation only. The actual MCP server runs as a separate Cloudflare Worker. Deploy the MCP server (see Section 6) to enable JSON-RPC API access.
 
 ### Site shows wrong content after deploy
 
