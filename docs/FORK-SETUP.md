@@ -269,12 +269,43 @@ To use a custom subdomain like `mcp.daemon.yourdomain.com`:
 **Troubleshooting:**
 - "Hostname not covered by certificate" → Delete manual CNAME, let wrangler manage it
 - "Hostname already has externally managed DNS records" → Same fix, delete the CNAME first
+- SSL takes 5-15 minutes to provision after deploy. Test with: `curl -s https://your-custom-domain/`
+
+### MCP Auto-Discovery
+
+AI agents discover your MCP server via this file.
+
+**Create `public/.well-known/mcp.json`:**
+```json
+{
+  "mcp_server": "https://mcp.daemon.yourdomain.com",
+  "transports": {
+    "json-rpc": {
+      "url": "https://mcp.daemon.yourdomain.com/",
+      "method": "POST"
+    },
+    "sse": {
+      "url": "https://mcp.daemon.yourdomain.com/sse"
+    }
+  },
+  "tools": 14,
+  "version": "1.0.0",
+  "spec": "https://modelcontextprotocol.io"
+}
+```
+
+**Add to `src/layouts/Layout.astro` (in `<head>`):**
+```html
+<!-- MCP Server Discovery -->
+<link rel="mcp-server" href="https://mcp.daemon.yourdomain.com" />
+<link rel="alternate" type="application/json" href="/.well-known/mcp.json" title="MCP Server" />
+```
+
+Rebuild and deploy after adding.
 
 ### Update API Documentation
 
-After deploying MCP server, update your `/api` page:
-- Change base URL from placeholder to your MCP endpoint
-- Update examples with your actual URL
+Update `/api` page with your MCP endpoint URL and examples.
 
 ---
 
@@ -294,6 +325,73 @@ Deploy from non-main branches to create preview URLs:
 |--------|-----|
 | `main` | `https://your-project.pages.dev` (production) |
 | `feature-x` | `https://feature-x.your-project.pages.dev` (preview) |
+
+---
+
+## 8. Manual Testing
+
+Run after each deployment.
+
+### Static Site
+
+```bash
+# Verify site loads
+curl -s https://your-project.pages.dev/ | grep -o '<title>.*</title>'
+# → <title>Daemon | Your Personal API...</title>
+
+# Verify TELOS page
+curl -s https://your-project.pages.dev/telos/ | grep -o 'TELOS'
+# → TELOS (multiple matches)
+```
+
+### MCP Server
+
+```bash
+# List tools (expect 14)
+curl -s -X POST https://mcp.daemon.yourdomain.com/ \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","method":"tools/list","id":1}' | jq '.result.tools | length'
+# → 14
+
+# Get TELOS
+curl -s -X POST https://mcp.daemon.yourdomain.com/ \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","method":"tools/call","params":{"name":"get_telos","arguments":{}},"id":2}' | jq -r '.result.content[0].text' | head -5
+# → Your TELOS content
+
+# Get About
+curl -s -X POST https://mcp.daemon.yourdomain.com/ \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","method":"tools/call","params":{"name":"get_about","arguments":{}},"id":3}' | jq -r '.result.content[0].text'
+# → Your bio
+
+# Health check
+curl -s https://mcp.daemon.yourdomain.com/health | jq .
+# → {"status":"ok","service":"daemon-mcp"}
+```
+
+### Auto-Discovery
+
+```bash
+# Discovery file
+curl -s https://your-project.pages.dev/.well-known/mcp.json | jq '.mcp_server'
+# → "https://mcp.daemon.yourdomain.com"
+
+# HTML link tag
+curl -s https://your-project.pages.dev/ | grep -o '<link rel="mcp-server"[^>]*>'
+# → <link rel="mcp-server" href="https://mcp.daemon.yourdomain.com">
+```
+
+### End-to-End
+
+```bash
+# Discover and call MCP server
+MCP_URL=$(curl -s https://your-project.pages.dev/.well-known/mcp.json | jq -r '.mcp_server')
+curl -s -X POST "$MCP_URL/" \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","method":"tools/list","id":1}' | jq '.result.tools | length'
+# → 14
+```
 
 ---
 
@@ -325,9 +423,12 @@ Run through this checklist after setup:
 ### MCP Server Working (Optional)
 
 - [ ] MCP worker deployed to `daemon-mcp.YOUR-ACCOUNT.workers.dev`
-- [ ] `tools/list` returns your tools (14 tools)
+- [ ] `tools/list` returns 14 tools
 - [ ] `tools/call` with `get_telos` returns your TELOS content
-- [ ] `/api` page updated with your MCP endpoint URL
+- [ ] Custom domain configured (optional): `mcp.daemon.yourdomain.com`
+- [ ] Auto-discovery: `/.well-known/mcp.json` exists with correct URL
+- [ ] Auto-discovery: HTML has `<link rel="mcp-server">` tag
+- [ ] `/api` page updated with your MCP endpoint
 
 ---
 
@@ -354,7 +455,12 @@ The `/api` page is documentation only. The actual MCP server runs as a separate 
 
 ### Site shows wrong content after deploy
 
-Clear Cloudflare cache: Dashboard → Your Project → Caching → Purge Cache.
+Cloudflare Pages caches aggressively. Options:
+1. Wait 5-15 minutes for cache expiry
+2. Test via deployment alias URL (shown after deploy)
+3. Redeploy: `wrangler pages deploy dist`
+
+Note: Pages has no "Purge Cache" button like regular Cloudflare sites.
 
 ---
 
