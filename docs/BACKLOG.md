@@ -8,17 +8,18 @@
 
 ## NOW
 
-- [ ] `[local]` Research: Deploy MCP server or configure worker for JSON-RPC (API currently returns 405)
+- [ ] `[upstream]` Research: Audit legacy VitePress components for unused code
 
 ## BACKLOG
-- [ ] `[upstream]` Research: Audit legacy VitePress components for unused code
+
+- [ ] `[upstream]` Single source of truth: build-time parser for daemon.md (upstream contribution candidate, see `docs/ROADMAP.md`)
+- [ ] `[local]` Set up custom domain `mcp.daemon.saltedkeys.io` for MCP server
 
 ## ROADMAP
 
-- [ ] `[upstream]` Single source of truth: build-time parser for daemon.md (upstream contribution candidate, see `docs/ROADMAP.md`)
-
 ## DONE
 
+- [x] `[local]` Deploy MCP server for JSON-RPC API → `daemon-mcp.saltedkeys.workers.dev` [2026-01-10]
 - [x] `[local]` Document fork deployment steps → `docs/FORK-SETUP.md` [2026-01-09]
 - [x] `[local]` Fix /telos page content [2026-01-09]
 
@@ -31,4 +32,4 @@ See `docs/adr/001-identity-data-architecture.md` for:
 
 ---
 
-*Last updated: 2026-01-09*
+*Last updated: 2026-01-10*
