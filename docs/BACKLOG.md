@@ -20,7 +20,7 @@
 
 - [x] `[local]` Deploy MCP server with custom domain → `mcp.daemon.saltedkeys.io` [2026-01-10]
 - [x] `[local]` Add MCP auto-discovery (/.well-known/mcp.json + HTML link tags) [2026-01-10]
-- [x] `[local]` Document fork deployment steps → `docs/FORK-SETUP.md` [2026-01-09]
+- [x] `[upstream]` Document fork deployment steps → `docs/FORK-SETUP.md` [2026-01-09]
 - [x] `[local]` Fix /telos page content [2026-01-09]
 
 ## APPENDIX: Architecture Notes
