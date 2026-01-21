@@ -37,8 +37,9 @@ interface DaemonData {
   // Collections
   favorite_books?: string[];
   favorite_movies?: string[];
+  favorite_tv?: string[];
   favorite_podcasts?: string[];
-  predictions?: string[];
+  projects_list?: string[];
 
   // Projects
   projects?: {
@@ -177,7 +178,8 @@ export function DaemonDashboard() {
       daily_routine: generatedData.dailyRoutine,
       favorite_books: generatedData.favoriteBooks,
       favorite_movies: generatedData.favoriteMovies,
-      predictions: generatedData.predictions,
+      favorite_tv: generatedData.favoriteTv,
+      projects_list: generatedData.projects,
       projects: {
         technical: generatedData.whatImBuilding,
       },
@@ -299,8 +301,8 @@ export function DaemonDashboard() {
         </ErrorBoundary>
       </div>
 
-      {/* TIER 2: Recommendations - 3 Columns */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      {/* TIER 2: Recommendations - 4 Columns */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         {/* Books */}
         <ErrorBoundary>
           <motion.div
@@ -347,7 +349,7 @@ export function DaemonDashboard() {
           </motion.div>
         </ErrorBoundary>
 
-        {/* Predictions */}
+        {/* TV */}
         <ErrorBoundary>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -357,14 +359,37 @@ export function DaemonDashboard() {
           >
             <div className="flex items-center justify-between mb-3 shrink-0">
               <div className="flex items-center gap-2">
-                <TrendingUp className="w-5 h-5 text-text-tertiary" />
-                <span className="font-mono text-sm font-semibold tracking-wider text-text-tertiary uppercase">Predictions</span>
+                <Film className="w-5 h-5 text-text-tertiary" />
+                <span className="font-mono text-sm font-semibold tracking-wider text-text-tertiary uppercase">TV</span>
               </div>
-              <span className="text-xs text-text-tertiary">{daemonData.predictions?.length || 0}</span>
+              <span className="text-xs text-text-tertiary">{daemonData.favorite_tv?.length || 0}</span>
             </div>
             <div className="overflow-y-auto flex-1 pr-1">
               <div className="space-y-2 pb-3">
-                <SafeList items={daemonData.predictions} fallback="No predictions listed" />
+                <SafeList items={daemonData.favorite_tv} fallback="No TV shows listed" />
+              </div>
+            </div>
+          </motion.div>
+        </ErrorBoundary>
+
+        {/* Projects */}
+        <ErrorBoundary>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="rounded-xl border border-border-default bg-bg-secondary/80 backdrop-blur-sm pt-5 px-5 pb-2 flex flex-col max-h-64"
+          >
+            <div className="flex items-center justify-between mb-3 shrink-0">
+              <div className="flex items-center gap-2">
+                <TrendingUp className="w-5 h-5 text-text-tertiary" />
+                <span className="font-mono text-sm font-semibold tracking-wider text-text-tertiary uppercase">Projects</span>
+              </div>
+              <span className="text-xs text-text-tertiary">{daemonData.projects_list?.length || 0}</span>
+            </div>
+            <div className="overflow-y-auto flex-1 pr-1">
+              <div className="space-y-2 pb-3">
+                <SafeList items={daemonData.projects_list} fallback="No projects listed" />
               </div>
             </div>
           </motion.div>
@@ -438,7 +463,7 @@ export function DaemonDashboard() {
           >
             <div className="flex items-center gap-2 mb-3 shrink-0">
               <Briefcase className="w-5 h-5 text-text-tertiary" />
-              <span className="font-mono text-sm font-semibold tracking-wider text-text-tertiary uppercase">Projects</span>
+              <span className="font-mono text-sm font-semibold tracking-wider text-text-tertiary uppercase">Building</span>
             </div>
             <div className="overflow-y-auto flex-1 pr-1">
               <div className="space-y-2 pb-3">

@@ -14,27 +14,33 @@ const OUTPUT_PATH = `${OUTPUT_DIR}/daemon-data.ts`;
 
 /**
  * Parse daemon.md into sections
+ * Sections with .unpublished suffix are parsed but excluded from output
  */
 function parseDaemonMd(content: string): DaemonSections {
 	const sections: DaemonSections = {};
 	const lines = content.split("\n");
 	let currentSection = "";
 	let currentContent: string[] = [];
+	let isUnpublished = false;
 
 	for (const line of lines) {
-		const sectionMatch = line.match(/^\[([A-Z_]+)\]$/);
+		// Match [SECTION_NAME] or [SECTION_NAME].unpublished
+		const sectionMatch = line.match(/^\[([A-Z_]+)\](\.unpublished)?$/);
 		if (sectionMatch) {
-			if (currentSection) {
+			// Save previous section (if not unpublished)
+			if (currentSection && !isUnpublished) {
 				sections[currentSection as keyof DaemonSections] = currentContent.join("\n").trim();
 			}
 			currentSection = sectionMatch[1];
+			isUnpublished = !!sectionMatch[2];
 			currentContent = [];
 		} else if (currentSection) {
 			currentContent.push(line);
 		}
 	}
 
-	if (currentSection) {
+	// Save final section (if not unpublished)
+	if (currentSection && !isUnpublished) {
 		sections[currentSection as keyof DaemonSections] = currentContent.join("\n").trim();
 	}
 
@@ -93,14 +99,15 @@ function transformToDaemonData(sections: DaemonSections, rawContent: string): Da
 		currentLocation: sections.CURRENT_LOCATION || "",
 		philosophy: sections.PHILOSOPHY || "",
 		whatImBuilding: parseList(sections.WHAT_IM_BUILDING),
+		whoIAm: sections.WHO_I_AM || "",
 		preferences: parseList(sections.PREFERENCES),
 		dailyRoutine: sections.DAILY_ROUTINE ? [sections.DAILY_ROUTINE] : [],
 		favoriteBooks: parseList(sections.FAVORITE_BOOKS),
 		favoriteMovies: parseList(sections.FAVORITE_MOVIES),
 		favoriteTv: parseList(sections.FAVORITE_TV),
-		predictions: sections.PREDICTIONS?.includes("To be added")
-			? ["Observing, not predicting"]
-			: parseList(sections.PREDICTIONS),
+		projects: parseList(sections.PROJECTS),
+		resume: sections.RESUME || "",
+		contact: sections.CONTACT || "",
 		lastUpdated: parseLastUpdated(rawContent),
 	};
 }

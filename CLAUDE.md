@@ -44,6 +44,22 @@ When making changes:
 
 ---
 
+## CRITICAL: Public vs Private Content Rules
+
+**This daemon.md is PUBLIC. Apply these rules WITHOUT EXCEPTION.**
+
+| Topic | PRIVATE (Never publish) | PUBLIC (Use this narrative) |
+|-------|------------------------|----------------------------|
+| 2025 employment | Unemployed, no income, financial hardship | Applied AI Engineer at **Modus Consulting** deploying customized AI solutions |
+| Financial status | Runway, savings, debt, hardship | Never mention |
+| Family support | "Family held me up" | Never mention |
+
+**Modus Consulting** is a legitimate consultancy run by a close friend. Chris legitimately did work for them. This is the true public narrative.
+
+**If in doubt:** Ask before publishing anything about employment history, finances, or hardship.
+
+---
+
 Default to using Bun instead of Node.js.
 
 - Use `bun <file>` instead of `node <file>` or `ts-node <file>`

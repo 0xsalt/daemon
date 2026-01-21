@@ -175,77 +175,61 @@ alias daemon-deploy='cd ~/path/to/daemon && bun run build && wrangler pages depl
 
 ---
 
-## 6. MCP Server (JSON-RPC API)
+## 6. MCP Server (Optional)
 
-The static site serves human visitors. The **MCP server** serves AI agents via JSON-RPC.
+The static site works standalone for human visitors. If you want **AI agents** to query your daemon via JSON-RPC/MCP, deploy the companion MCP server.
+
+> **Note:** The MCP server is optional. Your daemon site is fully functional without it.
 
 **Architecture:**
 ```
-your-project.pages.dev     → Static website (Cloudflare Pages)
-daemon-mcp.workers.dev     → MCP JSON-RPC API (Cloudflare Worker)
+your-project.pages.dev     → Static website (Cloudflare Pages) - humans
+daemon-mcp.workers.dev     → MCP JSON-RPC API (Cloudflare Worker) - AI agents
 ```
 
-### Create MCP Worker Project
+### Quick Start
+
+Clone and deploy the reference MCP server:
+
+**Repository:** [0xsalt/daemon-mcp](https://github.com/0xsalt/daemon-mcp)
 
 ```bash
-# Create sibling directory for MCP server
-cd ~/path/to/projects  # parent of daemon/
-mkdir daemon-mcp && cd daemon-mcp
-
-# Scaffold using Cloudflare MCP template
-bunx create-cloudflare@latest . \
-  --template=cloudflare/ai/demos/remote-mcp-authless --no-git
+# Clone the MCP server
+git clone https://github.com/0xsalt/daemon-mcp.git
+cd daemon-mcp
 
 # Install dependencies
 bun install
-```
 
-### Customize for Your Daemon
+# Configure: edit src/index.ts line 6
+# Change DAEMON_MD_URL to your daemon.md URL
+# e.g., "https://your-project.pages.dev/daemon.md"
 
-Replace `src/index.ts` with Daemon-specific implementation that:
-1. Fetches your `daemon.md` from the static site
-2. Parses sections by `[SECTION_NAME]` headers
-3. Exposes tools: `get_about`, `get_telos`, `get_mission`, etc.
-
-See reference implementation: `https://github.com/0xsalt/daemon-mcp`
-
-**Key configuration in `wrangler.jsonc`:**
-```json
-{
-  "name": "daemon-mcp",
-  "main": "src/index.ts",
-  "compatibility_flags": ["nodejs_compat"],
-  "durable_objects": {
-    "bindings": [{ "class_name": "DaemonMCP", "name": "MCP_OBJECT" }]
-  }
-}
-```
-
-### Deploy MCP Server
-
-```bash
-# Copy your Cloudflare token
-cp ~/path/to/daemon/.env .
-
-# Deploy
+# Deploy to Cloudflare Workers
 npx wrangler deploy
 ```
 
-**MCP URL:** `https://daemon-mcp.YOUR-ACCOUNT.workers.dev`
+**Features:**
+- 14 MCP tools (get_telos, get_about, get_mission, get_projects, etc.)
+- Dual transport: JSON-RPC (stateless) + SSE (for Claude Desktop)
+- Health check endpoint
+- Coming soon: Registry features for daemon discovery
 
 ### Test MCP Endpoint
 
 ```bash
 # List available tools
-curl -X POST https://daemon-mcp.YOUR-ACCOUNT.workers.dev/ \
+curl -X POST https://YOUR-WORKER.workers.dev/ \
   -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","method":"tools/list","id":1}'
 
 # Call a tool
-curl -X POST https://daemon-mcp.YOUR-ACCOUNT.workers.dev/ \
+curl -X POST https://YOUR-WORKER.workers.dev/ \
   -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","method":"tools/call","params":{"name":"get_telos","arguments":{}},"id":2}'
 ```
+
+See the [daemon-mcp README](https://github.com/0xsalt/daemon-mcp) for full configuration options.
 
 ### Custom MCP Domain (Optional)
 

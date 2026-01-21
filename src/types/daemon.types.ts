@@ -12,12 +12,15 @@ export interface DaemonSections {
   MISSION?: string;
   TELOS?: string;
   WHAT_IM_BUILDING?: string;
+  WHO_I_AM?: string;
   FAVORITE_BOOKS?: string;
   FAVORITE_MOVIES?: string;
   FAVORITE_TV?: string;
   PREFERENCES?: string;
   DAILY_ROUTINE?: string;
-  PREDICTIONS?: string;
+  PROJECTS?: string;
+  RESUME?: string;
+  CONTACT?: string;
   PHILOSOPHY?: string;
 }
 
@@ -31,12 +34,15 @@ export interface DaemonData {
   currentLocation: string;
   philosophy: string;
   whatImBuilding: string[];
+  whoIAm: string;
   preferences: string[];
   dailyRoutine: string[];
   favoriteBooks: string[];
   favoriteMovies: string[];
   favoriteTv: string[];
-  predictions: string[];
+  projects: string[];
+  resume: string;
+  contact: string;
   lastUpdated: string;
 }
 
