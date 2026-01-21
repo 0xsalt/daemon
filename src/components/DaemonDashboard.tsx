@@ -301,8 +301,8 @@ export function DaemonDashboard() {
         </ErrorBoundary>
       </div>
 
-      {/* TIER 2: Recommendations - 4 Columns */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      {/* TIER 2: Recommendations - 2 Columns */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Books */}
         <ErrorBoundary>
           <motion.div
@@ -332,7 +332,7 @@ export function DaemonDashboard() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="rounded-xl border border-border-default bg-bg-secondary/80 backdrop-blur-sm pt-5 px-5 pb-2 flex flex-col max-h-96"
+            className="rounded-xl border border-border-default bg-bg-secondary/80 backdrop-blur-sm pt-5 px-5 pb-2 flex flex-col max-h-64"
           >
             <div className="flex items-center justify-between mb-3 shrink-0">
               <div className="flex items-center gap-2">
@@ -344,52 +344,6 @@ export function DaemonDashboard() {
             <div className="overflow-y-auto flex-1 pr-1">
               <div className="space-y-2 pb-3">
                 <SafeList items={daemonData.favorite_movies} fallback="No movies listed" />
-              </div>
-            </div>
-          </motion.div>
-        </ErrorBoundary>
-
-        {/* TV */}
-        <ErrorBoundary>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.25 }}
-            className="rounded-xl border border-border-default bg-bg-secondary/80 backdrop-blur-sm pt-5 px-5 pb-2 flex flex-col max-h-64"
-          >
-            <div className="flex items-center justify-between mb-3 shrink-0">
-              <div className="flex items-center gap-2">
-                <Film className="w-5 h-5 text-text-tertiary" />
-                <span className="font-mono text-sm font-semibold tracking-wider text-text-tertiary uppercase">TV</span>
-              </div>
-              <span className="text-xs text-text-tertiary">{daemonData.favorite_tv?.length || 0}</span>
-            </div>
-            <div className="overflow-y-auto flex-1 pr-1">
-              <div className="space-y-2 pb-3">
-                <SafeList items={daemonData.favorite_tv} fallback="No TV shows listed" />
-              </div>
-            </div>
-          </motion.div>
-        </ErrorBoundary>
-
-        {/* Projects */}
-        <ErrorBoundary>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="rounded-xl border border-border-default bg-bg-secondary/80 backdrop-blur-sm pt-5 px-5 pb-2 flex flex-col max-h-64"
-          >
-            <div className="flex items-center justify-between mb-3 shrink-0">
-              <div className="flex items-center gap-2">
-                <TrendingUp className="w-5 h-5 text-text-tertiary" />
-                <span className="font-mono text-sm font-semibold tracking-wider text-text-tertiary uppercase">Projects</span>
-              </div>
-              <span className="text-xs text-text-tertiary">{daemonData.projects_list?.length || 0}</span>
-            </div>
-            <div className="overflow-y-auto flex-1 pr-1">
-              <div className="space-y-2 pb-3">
-                <SafeList items={daemonData.projects_list} fallback="No projects listed" />
               </div>
             </div>
           </motion.div>
