@@ -4,6 +4,19 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) + [SemVer](http
 
 ## [Unreleased]
 
+### Added
+- `[upstream]` XDG-compliant path resolution for daemon.md
+- `[upstream]` Example template (`public/daemon.example.md`) for new users
+- `[upstream]` Setup documentation (`docs/SETUP.md`) with configuration guide
+
+### Changed
+- `[upstream]` Parser reads from `~/.config/daemon/daemon.md` (XDG) instead of repo
+- `[upstream]` Repo is now a clean framework - no personal data in history
+- `[local]` CLAUDE.md updated to reflect new content architecture
+
+### Removed
+- Personal content from git history via filter-repo rewrite
+
 ## [2.0.0] - 2026-01-10
 
 Build-time parser for single source of truth - dashboard and MCP server now derive from the same `daemon.md` file.

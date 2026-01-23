@@ -25,38 +25,32 @@ When making changes:
 
 ## Branching Strategy
 
-| Branch | Purpose | Contains Personal Content? |
-|--------|---------|---------------------------|
-| `main` | Deployed personal site | YES |
-| `upstream-main` | Clean branch tracking upstream | NO |
+| Branch | Purpose |
+|--------|---------|
+| `main` | Framework + deployed site |
+| `upstream-main` | Clean branch tracking upstream |
 
 **Remotes:**
 - `origin` = your fork (0xsalt/daemon) - push here
 - `upstream` = original repo (danielmiessler/Daemon) - pull from here
 
 **Workflow:**
-- **Never commit directly to main** - always use branches, merge when ready
-- `dev/*` branches for personal site improvements (branch from main)
+- `dev/*` branches for improvements (branch from main)
 - `feature/*`, `bug/*` branches for upstream PRs (branch from upstream-main)
 - Sync upstream: `git fetch upstream && git checkout upstream-main && git merge upstream/main`
 
-**Never PR from main** - it contains personal identity data.
+## Content Architecture
 
----
+Personal content lives in XDG config, not the repo:
 
-## CRITICAL: Public vs Private Content Rules
+```
+~/.config/daemon/daemon.md     # Your personal content (PRIVATE)
+public/daemon.example.md       # Template (committed)
+src/generated/daemon-data.ts   # Build output (gitignored)
+```
 
-**This daemon.md is PUBLIC. Apply these rules WITHOUT EXCEPTION.**
-
-| Topic | PRIVATE (Never publish) | PUBLIC (Use this narrative) |
-|-------|------------------------|----------------------------|
-| 2025 employment | Unemployed, no income, financial hardship | Applied AI Engineer at **Modus Consulting** deploying customized AI solutions |
-| Financial status | Runway, savings, debt, hardship | Never mention |
-| Family support | "Family held me up" | Never mention |
-
-**Modus Consulting** is a legitimate consultancy run by a close friend. Chris legitimately did work for them. This is the true public narrative.
-
-**If in doubt:** Ask before publishing anything about employment history, finances, or hardship.
+The repo contains only framework code. Safe to push to public GitHub.
+See `docs/SETUP.md` for configuration instructions.
 
 ---
 

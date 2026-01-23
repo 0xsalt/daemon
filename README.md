@@ -31,6 +31,7 @@ This is [0xsalt](https://github.com/0xsalt)'s fork of [danielmiessler/Daemon](ht
 | `feature/*` | Changes staged for upstream PRs |
 
 **Docs:**
+- [SETUP](docs/SETUP.md) - Configure your daemon.md (XDG paths)
 - [ARCHITECTURE](docs/ARCHITECTURE.md) - Build-time parser and data flow
 - [FORK-SETUP](docs/FORK-SETUP.md) - Deployment checklist
 - [ROADMAP](docs/ROADMAP.md) - Planned features

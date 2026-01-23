@@ -9,6 +9,11 @@ dist
 # Generated files (build-time parser output)
 src/generated/
 
+# Personal daemon config (lives in XDG, not repo)
+# daemon.example.md is the template that IS committed
+public/daemon.md
+!public/daemon.example.md
+
 # code coverage
 coverage
 *.lcov

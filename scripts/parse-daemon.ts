@@ -1,16 +1,41 @@
 /**
  * Build-time parser for daemon.md
  *
- * Reads public/daemon.md, parses sections, generates TypeScript data file.
+ * Reads daemon.md from XDG config path, parses sections, generates TypeScript data file.
  * Run with: bun scripts/parse-daemon.ts
+ *
+ * Path resolution order:
+ * 1. DAEMON_MD_PATH environment variable
+ * 2. $XDG_CONFIG_HOME/daemon/daemon.md
+ * 3. ~/.config/daemon/daemon.md
+ * 4. public/daemon.example.md (fallback for development)
  */
 
 import type { DaemonSections, DaemonData, HeroData } from "../src/types/daemon.types";
 
 const PROJECT_ROOT = import.meta.dir.replace("/scripts", "");
-const DAEMON_MD_PATH = `${PROJECT_ROOT}/public/daemon.md`;
 const OUTPUT_DIR = `${PROJECT_ROOT}/src/generated`;
 const OUTPUT_PATH = `${OUTPUT_DIR}/daemon-data.ts`;
+
+// XDG-compliant path resolution
+function resolveDaemonMdPath(): string {
+	// 1. Environment variable override
+	if (process.env.DAEMON_MD_PATH) {
+		return process.env.DAEMON_MD_PATH;
+	}
+
+	// 2. XDG_CONFIG_HOME or default ~/.config
+	const xdgConfigHome = process.env.XDG_CONFIG_HOME || `${process.env.HOME}/.config`;
+	const xdgPath = `${xdgConfigHome}/daemon/daemon.md`;
+
+	// 3. Fallback to example template
+	const fallbackPath = `${PROJECT_ROOT}/public/daemon.example.md`;
+
+	return xdgPath; // Primary path - existence checked in main()
+}
+
+const DAEMON_MD_PATH = resolveDaemonMdPath();
+const FALLBACK_PATH = `${PROJECT_ROOT}/public/daemon.example.md`;
 
 /**
  * Parse daemon.md into sections
@@ -128,12 +153,13 @@ function extractHeroData(sections: DaemonSections): HeroData {
 /**
  * Generate TypeScript output file
  */
-function generateOutput(data: DaemonData, heroData: HeroData): string {
+function generateOutput(data: DaemonData, heroData: HeroData, sourcePath: string): string {
 	return `/**
  * AUTO-GENERATED FILE - DO NOT EDIT
  *
- * Generated from public/daemon.md by scripts/parse-daemon.ts
- * To update, edit daemon.md and run: bun run parse-daemon
+ * Generated from: ${sourcePath}
+ * Parser: scripts/parse-daemon.ts
+ * To update, edit your daemon.md and run: bun run parse-daemon
  *
  * Generated: ${new Date().toISOString()}
  */
@@ -155,13 +181,25 @@ export const toolCount = 14;
 async function main() {
 	console.log("Parsing daemon.md...");
 
-	// Read source file
-	const file = Bun.file(DAEMON_MD_PATH);
+	// Try primary path, fall back to example template
+	let sourcePath = DAEMON_MD_PATH;
+	let file = Bun.file(DAEMON_MD_PATH);
+
 	if (!(await file.exists())) {
-		console.error(`Error: ${DAEMON_MD_PATH} not found`);
-		process.exit(1);
+		console.log(`Primary path not found: ${DAEMON_MD_PATH}`);
+		console.log(`Falling back to: ${FALLBACK_PATH}`);
+		sourcePath = FALLBACK_PATH;
+		file = Bun.file(FALLBACK_PATH);
+
+		if (!(await file.exists())) {
+			console.error(`Error: Neither ${DAEMON_MD_PATH} nor ${FALLBACK_PATH} found`);
+			console.error("Create your daemon.md at ~/.config/daemon/daemon.md");
+			console.error("See docs/SETUP.md for instructions.");
+			process.exit(1);
+		}
 	}
 
+	console.log(`Source: ${sourcePath}`);
 	const content = await file.text();
 
 	// Parse sections
@@ -176,7 +214,7 @@ async function main() {
 	await Bun.$`mkdir -p ${OUTPUT_DIR}`.quiet();
 
 	// Write output
-	const output = generateOutput(daemonData, heroData);
+	const output = generateOutput(daemonData, heroData, sourcePath);
 	await Bun.write(OUTPUT_PATH, output);
 
 	console.log(`Generated: ${OUTPUT_PATH}`);
